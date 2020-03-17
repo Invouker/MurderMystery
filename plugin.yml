@@ -1,0 +1,7 @@
+name: MurderMystery
+main: sk.xpress.murdermystery.Main
+version: 1.0
+description: Murder Mystery
+author: XPresS
+
+api-version: 1.14
