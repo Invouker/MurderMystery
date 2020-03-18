@@ -21,6 +21,7 @@ import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 import sk.xpress.murdermystery.listeners.JoinQuit;
+import sk.xpress.murdermystery.listeners.MinigameEvents;
 import sk.xpress.murdermystery.listeners.Test;
 
 
@@ -65,6 +66,7 @@ public class Main extends JavaPlugin {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new Test(), this);
 		pm.registerEvents(new JoinQuit(), this);
+		pm.registerEvents(new MinigameEvents(), this);
 	}
 	
 	public void commandManager() {

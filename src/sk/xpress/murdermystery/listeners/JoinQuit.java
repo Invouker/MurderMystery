@@ -26,6 +26,8 @@ public class JoinQuit implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
+		if(API.getMinigame().getState() != MinigameState.Lobby) e.getPlayer().kickPlayer("Táto hra už sa hrá!");
+		
 		double x = Main.getInstance().getConfig().getDouble("murdermystery.join.position.x");
 		double y = Main.getInstance().getConfig().getDouble("murdermystery.join.position.y");
 		double z = Main.getInstance().getConfig().getDouble("murdermystery.join.position.z");
@@ -53,7 +55,7 @@ public class JoinQuit implements Listener {
 				.extra(ComponentBuilder.text(")").build())
 				.build());
 		
-		if(Bukkit.getOnlinePlayers().size() > API.getMinigame().getMinPlayers() || true) { // ak je viac hráèov ako minimálne, spustí warmup 
+		if(Bukkit.getOnlinePlayers().size() > API.getMinigame().getMinPlayers() || Main.getTasks().get("ToWarmUp") == null || true) { // ak je viac hráèov ako minimálne, spustí warmup 
 			BukkitTask task = new BukkitRunnable() {
 				int i = 10;
 				@Override
@@ -63,7 +65,7 @@ public class JoinQuit implements Listener {
 						case 5:
 						case 4: {
 							// MESSAGE
-							ChatInfo.GENERAL_INFO.send(e.getPlayer(), 
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, 
 									ComponentBuilder
 									.text("Hra sa zaène o " + i)
 									.color(ChatColor.YELLOW)
@@ -75,7 +77,7 @@ public class JoinQuit implements Listener {
 						case 2:
 						case 1: {
 							// TITLE
-							e.getPlayer().sendTitle("§e§lHra zaène o", "§a" + i, 20, 40, 20);
+							for(Player p: Bukkit.getOnlinePlayers()) p.sendTitle("§e§lHra zaène o", "§a" + i, 20, 40, 20);
 							break;
 						}
 						
