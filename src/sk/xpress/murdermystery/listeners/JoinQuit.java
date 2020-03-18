@@ -19,6 +19,7 @@ import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.md_5.bungee.api.ChatColor;
 import sk.xpress.murdermystery.Main;
+import sk.xpress.murdermystery.handler.Chat;
 
 public class JoinQuit implements Listener {
 
@@ -54,10 +55,10 @@ public class JoinQuit implements Listener {
 		
 		if(Bukkit.getOnlinePlayers().size() > API.getMinigame().getMinPlayers() || true) { // ak je viac hráèov ako minimálne, spustí warmup 
 			BukkitTask task = new BukkitRunnable() {
+				int i = 10;
 				@Override
 				public void run() {
-					
-					int i = 0;
+					Chat.print("I: " + i);
 					switch(i) {
 						case 5:
 						case 4: {
@@ -89,7 +90,7 @@ public class JoinQuit implements Listener {
 						}
 					}
 					
-					i++;
+					i--;
 				}
 			}.runTaskTimer(Main.getInstance(), 0L, 20L);
 			
