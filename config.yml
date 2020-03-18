@@ -1,0 +1,29 @@
+#Test
+#-204, 79, 164, 90, 0
+
+murdermystery:
+  join:
+    position:
+      x: -204.5
+      y: 79
+      z: 164.5
+      world: world
+      yaw: 90
+      pitch: 0
+  warmup:
+    positions:
+      '1':
+        x: -213.5
+        y: 78
+        z: 173.5
+        world: world
+      '2':
+        x: -216.5
+        y: 78
+        z: 163.5
+        world: world
+      '3':
+        x: -215.5
+        y: 78
+        z: 168.5
+        world: world
