@@ -1,7 +1,16 @@
-#Test
-#-204, 79, 164, 90, 0
-
+#Setup MurderMystery
 murdermystery:
+  arena:
+    max: 
+      x: -220
+      y: 85
+      z: 178
+      world: world
+    min:
+      x: -206
+      y: 77
+      z: 159
+      world: world
   join:
     position:
       x: -204.5
@@ -11,19 +20,17 @@ murdermystery:
       yaw: 90
       pitch: 0
   warmup:
+    world: world
     positions:
-      '1':
+      '0':
         x: -213.5
         y: 78
         z: 173.5
-        world: world
-      '2':
+      '1':
         x: -216.5
         y: 78
         z: 163.5
-        world: world
-      '3':
+      '2':
         x: -215.5
         y: 78
         z: 168.5
-        world: world
