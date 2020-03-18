@@ -1,5 +1,7 @@
 package sk.xpress.murdermystery.listeners;
 
+import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -77,6 +79,11 @@ public class JoinQuit implements Listener {
 						}
 						
 						case 0:{ // START
+							Random rand = new Random();
+							int random = rand.nextInt(Main.getWarmUpLocation().size()-1);
+							Location loc = Main.getWarmUpLocation().get(random);
+							e.getPlayer().teleport(loc);
+							
 							Main.getInstance().setGameState(MinigameState.Warmup);
 							Main.getInstance().taskCancel("ToWarmUp");
 						}

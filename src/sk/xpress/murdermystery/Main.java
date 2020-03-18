@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,7 +72,20 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void initializePositions() {
-		
+		String world = getConfig().getString("murdermystery.warmup.world");
+		World w = Bukkit.getWorld(world);
+		if(w == null) throw new NullPointerException("Warmup positions, world cannot be null!");
+			
+		ConfigurationSection cs = getConfig().getConfigurationSection("murdermystery.warmup.positions");
+		for(String s : cs.getKeys(false)) {
+			
+			double x = getConfig().getDouble("murdermystery.warmup.positions." + s + ".x");
+			double y = getConfig().getDouble("murdermystery.warmup.positions." + s + ".y");
+			double z = getConfig().getDouble("murdermystery.warmup.positions." + s + ".z");		
+			
+			Location loc = new Location(w, x, y, z);
+			getWarmUpLocation().add(loc);
+		}
 	}
 	
 	public void setGameState(MinigameState gameState) {	
