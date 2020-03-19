@@ -4,6 +4,6 @@ version: 1.0
 description: Murder Mystery
 author: XPresS
 
-softdepend: [Minigame_API]
+softdepend: [Minigame_API, ProtocolLib]
 
 api-version: 1.14

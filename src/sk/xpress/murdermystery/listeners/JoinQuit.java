@@ -26,7 +26,10 @@ public class JoinQuit implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		
-		if(API.getMinigame().getState() != MinigameState.Lobby) e.getPlayer().kickPlayer("Táto hra už sa hrá!");
+		if(API.getMinigame().getState() != MinigameState.Lobby) {
+			e.getPlayer().kickPlayer("Táto hra už sa hrá!");
+			return;
+		}
 		
 		double x = Main.getInstance().getConfig().getDouble("murdermystery.join.position.x");
 		double y = Main.getInstance().getConfig().getDouble("murdermystery.join.position.y");

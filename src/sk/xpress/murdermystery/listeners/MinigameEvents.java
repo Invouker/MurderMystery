@@ -28,28 +28,31 @@ public class MinigameEvents implements Listener  {
 	@EventHandler
 	public void onGameStateChange(MinigameStateChangedEvent e) {
 		if(e.getState() == MinigameState.Warmup) {
+			//Main.getTasks().get("ToWarmUp")
+			Main.getInstance().taskCancel("ToWarmUp");
+			
 			BukkitTask task = new BukkitRunnable() {
-				int time = 20;
+				int time = 10;
 				@Override
 				public void run() {
 					Chat.print("TIME: " + time);
 					switch(time) {
 						case 20:{
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Hra zaène za " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Rozdelenie rolí o " + time + " sekúnd").build());
 							break;
 						}
 						case 10: {
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Hra zaène za " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Rozdelenie rolí o " + time + " sekúnd").build());
 							break;
 						}
 						case 5: {
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Hra zaène za " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Rozdelenie rolí o " + time + " sekúnd").build());
 							break;
 						}
 						case 3: 
 						case 2:
 						case 1:{
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Hra zaène za " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Rozdelenie rolí o " + time + " sekúnd").build());
 							break;
 						}
 						case 0:{ // START HRY
@@ -69,6 +72,8 @@ public class MinigameEvents implements Listener  {
 		if(e.getState() == MinigameState.InProgress) {
 			// SAMOTNE JADRO HRY SPUSTI....
 			// ROZDELIT ROLE - INNOCENT/DETECTIVE/MURDER
+			Main.getInstance().taskCancel("ToStartUp");
+			
 			goldSpawner();
 			
 			Random rand = new Random();
@@ -83,31 +88,31 @@ public class MinigameEvents implements Listener  {
 			
 			int playerCount = players.size();
 			
+			if(players.size() > 1) {
+				Player detective = players.get(rand.nextInt(playerCount)); // -1 - prida
+				players.remove(detective);
+				detectives.add(detective);
+				detective.sendTitle("§eYou are", "§9§lDETECTIVE",20,40,20);
+			}
 			
-			Player detective = players.get(rand.nextInt(playerCount)); // -1 - prida
-			players.remove(detective);
-			detectives.add(detective);
-			detective.sendTitle("§eYou are", "§9§lDETECTIVE",20,40,20);
-			
-			
-			Player murder = players.get(rand.nextInt(playerCount)); // -1
-			players.remove(murder);
-			murders.add(murder);
-			detective.sendTitle("§eYou are", "§c§lMURDER",20,40,20);
-			
+			if(players.size() > 1) {
+				Player murder = players.get(rand.nextInt(playerCount)); // -1
+				players.remove(murder);
+				murders.add(murder);
+				murder.sendTitle("§eYou are", "§c§lMURDER",20,40,20);
+			}
 			
 			for(Player p : players) p.sendTitle("§eYou are", "§a§lINNOCENT",20,40,20);
+			
+			Chat.print("DETECTIVES: " + detectives);
+			Chat.print("MUDERS: " + murders);
+			Chat.print("INNOCENTS: " + players);
+			
 			API.getMinigame().getRoles().put(Roles.DETECTIVE.getName(), detectives);
 			API.getMinigame().getRoles().put(Roles.INNOCENT.getName(), players);
-			API.getMinigame().getRoles().put(Roles.MURDER.getName(), murders);
-			
-			
-		}
-		
-		
-		
+			API.getMinigame().getRoles().put(Roles.MURDER.getName(), murders);		
+		}	
 	}
-	
 	
 	public void goldSpawner() {
 		int respawnTime = Main.getInstance().getConfig().getInt("murdermystery.options.gold-spawner-rate");
@@ -122,8 +127,10 @@ public class MinigameEvents implements Listener  {
 			
 			@Override
 			public void run() {
-				if(Main.getInstance().getGoldSpawned() < goldSpawnedOnce) {
+				int goldSpawned = Main.getInstance().getGoldSpawned();
+				if(goldSpawned < goldSpawnedOnce) {
 					new GoldGenerator(w);
+					Main.getInstance().setGoldSpawned(goldSpawned+1);
 				}
 			}
 			

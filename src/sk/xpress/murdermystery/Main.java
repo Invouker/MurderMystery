@@ -14,6 +14,9 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.graymadness.minigame_api.api.API;
@@ -23,6 +26,7 @@ import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 import sk.xpress.murdermystery.listeners.JoinQuit;
 import sk.xpress.murdermystery.listeners.MinigameEvents;
+import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.Test;
 
 
@@ -40,10 +44,12 @@ public class Main extends JavaPlugin {
 	@Getter @Setter private static Location arenaMax;
 	
 	@Getter @Setter private int goldSpawned;
+	@Getter private static ProtocolManager protocolManager;
 	
 	@Override
 	public void onEnable() {
 		instance = this;
+		protocolManager = ProtocolLibrary.getProtocolManager();
 		
 		this.saveDefaultConfig();
 		
@@ -56,10 +62,7 @@ public class Main extends JavaPlugin {
 		initializePositions();
 				
 		API.registerMinigame(new MurderMystery());
-		
-		API.getMinigame().getRoles().put(Roles.DETECTIVE.getName(), null);
-		API.getMinigame().getRoles().put(Roles.INNOCENT.getName(), null);
-		API.getMinigame().getRoles().put(Roles.MURDER.getName(), null);
+
 	}
 	
 	public void onDisable() {
@@ -71,6 +74,7 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new Test(), this);
 		pm.registerEvents(new JoinQuit(), this);
 		pm.registerEvents(new MinigameEvents(), this);
+		pm.registerEvents(new PlayerPickupItem(), this);
 	}
 	
 	public void commandManager() {
@@ -130,9 +134,38 @@ public class Main extends JavaPlugin {
 	
 	public void taskCancel(String task) {
 		if(tasks.containsKey(task)) {
-			tasks.get(task).cancel();
-			tasks.remove(task);
+			if(tasks.get(task) != null) {
+				tasks.get(task).cancel();
+				tasks.remove(task);
+			}
 		}
 	}
 	
+	public static boolean isPlayerDetective(Player p) {
+		List<Player> detectives = API.getMinigame().getRoles().get(Roles.DETECTIVE.getName());
+		if(detectives != null) 	{
+			for(Player detective : detectives) 
+				if(detective == p) return true;					
+		}
+		return false;
+	}
+	
+	public static boolean isPlayerInnocent(Player p) {
+		List<Player> innocents = API.getMinigame().getRoles().get(Roles.INNOCENT.getName());
+		if(innocents != null) 	{
+			for(Player innocent : innocents) 
+				if(innocent == p) return true;					
+		}
+		
+		return false;
+	}
+	
+	public static boolean isPlayerMurder(Player p) {
+		List<Player> murders = API.getMinigame().getRoles().get(Roles.MURDER.getName());
+		if(murders != null) 	{
+			for(Player murder : murders) 
+				if(murder == p) return true;					
+		}
+		return false;
+	}
 }
