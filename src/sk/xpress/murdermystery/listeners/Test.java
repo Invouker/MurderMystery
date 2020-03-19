@@ -26,7 +26,9 @@ public class Test implements Listener {
 				}
 				
 				if(is.getType() == Material.COMPARATOR) {
-					new GoldGenerator(Main.getArenaMin().getWorld());
+					new GoldGenerator(
+							Main.getArenaMin().getWorld()
+							);
 					Chat.print("Generating item");
 				}
 			}

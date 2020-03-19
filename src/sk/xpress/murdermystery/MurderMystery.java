@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
+
+import com.sun.istack.internal.NotNull;
 
 import net.graymadness.minigame_api.api.IMinigame;
 import net.graymadness.minigame_api.api.MinigameState;

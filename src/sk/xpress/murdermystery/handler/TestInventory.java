@@ -4,8 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
@@ -18,18 +16,18 @@ public class TestInventory extends ItemMenu {
 	}
 
 	@Override
-	protected void onClick(@NotNull Player p, int item, @Nullable ItemStack is, @Nullable ItemStack cursorIs,@NotNull InventoryClickEvent e) {
+	protected void onClick( Player p, int item,  ItemStack is,  ItemStack cursorIs, InventoryClickEvent e) {
 		Chat.print("CLICK" + is.getItemMeta().getDisplayName());
 		e.setCancelled(true);
 	}
 
 	@Override
-	protected void onClose(@NotNull Player p) {
+	protected void onClose(Player p) {
 		Chat.print("Close");
 	}
 
 	@Override
-	protected void onOpen(@NotNull Player p) {
+	protected void onOpen(Player p) {
 		this.getInventory().addItem(new ItemBuilder(Material.ACACIA_BOAT).setName(ComponentBuilder.text("Ahoj").build()).build());
 		Chat.print("Open");		
 	}

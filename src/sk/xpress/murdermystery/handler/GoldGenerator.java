@@ -8,13 +8,18 @@ import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import sk.xpress.murdermystery.Main;
 
 public class GoldGenerator {
-	private World w;
+	@Getter @Setter private World w;
+	
 	private static final ItemStack item = new ItemBuilder(Material.GOLD_INGOT).build();
-
+	
+	//@Getter private static List<>
+	
 	public GoldGenerator(World w) {
 		this.w = w;
 		
