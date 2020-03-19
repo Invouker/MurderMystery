@@ -1,3 +1,12 @@
 /bin/
 /target/
 /BuildTool/
+.gradle/5.6.1/executionHistory/executionHistory.lock
+.gradle/5.6.1/fileChanges/last-build.bin
+.classpath
+.gradle/5.6.1/fileHashes/fileHashes.lock
+*.lock
+*.properties
+.project
+.settings/org.eclipse.buildship.core.prefs
+.project

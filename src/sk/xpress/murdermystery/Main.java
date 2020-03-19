@@ -14,11 +14,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-
-import lombok.Getter;
-import lombok.Setter;
 import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.api.MinigameState;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
@@ -32,24 +27,57 @@ import sk.xpress.murdermystery.listeners.Test;
 
 public class Main extends JavaPlugin {
 
-	@Getter private static Main instance;
-	@Getter private static MinigameState state = MinigameState.Lobby;
-	@Getter private static Map<String, List<Player>> roles = new HashMap<>();
+	private static Main instance;
+	public static Main getInstance() { 
+		return instance; 
+	}
+	private static MinigameState state = MinigameState.Lobby;
+	public static MinigameState getState() {
+		return state;
+	}
 	
-	@Getter private static Map<String, BukkitTask> tasks = new HashMap<>();
+	private static Map<String, List<Player>> roles = new HashMap<>();
+	public static Map<String, List<Player>> getRoles() {
+		return roles;
+	}
 	
-	@Getter private static List<Location> warmUpLocation = new ArrayList<>();
+	private static Map<String, BukkitTask> tasks = new HashMap<>();
+	public static Map<String, BukkitTask> getTasks(){
+		return tasks;
+	}
 	
-	@Getter @Setter private static Location arenaMin;
-	@Getter @Setter private static Location arenaMax;
+	private static List<Location> warmUpLocation = new ArrayList<>();
+	public static List<Location> getWarmUpLocation(){
+		return warmUpLocation;
+	}
 	
-	@Getter @Setter private int goldSpawned;
-	@Getter private static ProtocolManager protocolManager;
+	private static Location arenaMin;
+	public static void setArenaMin(Location loc) {
+		arenaMin = loc;
+	}
+	public static Location getArenaMin() {
+		return arenaMin;
+	}
+	
+	private static Location arenaMax;
+	public void setArenaMax(Location loc) {
+		arenaMax = loc;
+	}
+	public static Location getArenaMax() {
+		return arenaMax;
+	}
+	
+	private int goldSpawned;
+	public void setGoldSpawned(int spawned) {
+		this.goldSpawned = spawned;
+	}
+	public int getGoldSpawned() {
+		return this.goldSpawned;
+	}
 	
 	@Override
 	public void onEnable() {
 		instance = this;
-		protocolManager = ProtocolLibrary.getProtocolManager();
 		
 		this.saveDefaultConfig();
 		
@@ -62,7 +90,6 @@ public class Main extends JavaPlugin {
 		initializePositions();
 				
 		API.registerMinigame(new MurderMystery());
-
 	}
 	
 	public void onDisable() {

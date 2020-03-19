@@ -64,6 +64,11 @@ public class PlayerPickupItem implements Listener {
 					e.setCancelled(true);
 					break;
 				}
+				
+				case ARROW: { // aby neöli zbieraù öÌpy zo zeme..
+					e.setCancelled(true);
+					break;
+				}
 				default: return;
 			}
 		}
