@@ -23,6 +23,7 @@ import sk.xpress.murdermystery.listeners.JoinQuit;
 import sk.xpress.murdermystery.listeners.MinigameEvents;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.Test;
+import sk.xpress.murdermystery.listeners.ThrowableSword;
 
 
 public class Main extends JavaPlugin {
@@ -93,7 +94,10 @@ public class Main extends JavaPlugin {
 	}
 	
 	public void onDisable() {
-		
+		for(Map.Entry<String, BukkitTask> entry : Main.getTasks().entrySet()) { // vypnuù vöetk˝ tasks
+			BukkitTask task = entry.getValue();
+			if(task != null) task.cancel();
+		}
 	}
 
 	public void listeners() {
@@ -102,6 +106,8 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new JoinQuit(), this);
 		pm.registerEvents(new MinigameEvents(), this);
 		pm.registerEvents(new PlayerPickupItem(), this);
+		
+		pm.registerEvents(new ThrowableSword(), this);
 	}
 	
 	public void commandManager() {
@@ -168,6 +174,15 @@ public class Main extends JavaPlugin {
 		}
 	}
 	
+	public static Roles playerDetectRole(Player p) {
+		if(Main.isPlayerDetective(p)) return Roles.DETECTIVE;
+		if(Main.isPlayerInnocent(p)) return Roles.INNOCENT;
+		if(Main.isPlayerMurder(p)) return Roles.MURDER;
+		if(Main.isPlayerSpectator(p)) return Roles.SPECTATOR;
+	
+		return Roles.NONE;
+	}
+	
 	public static boolean isPlayerDetective(Player p) {
 		List<Player> detectives = API.getMinigame().getRoles().get(Roles.DETECTIVE.getName());
 		if(detectives != null) 	{
@@ -182,8 +197,16 @@ public class Main extends JavaPlugin {
 		if(innocents != null) 	{
 			for(Player innocent : innocents) 
 				if(innocent == p) return true;					
-		}
-		
+		}	
+		return false;
+	}
+	
+	public static boolean isPlayerSpectator(Player p) {
+		List<Player> spectators = API.getMinigame().getRoles().get(Roles.SPECTATOR.getName());
+		if(spectators != null) 	{
+			for(Player spectator : spectators) 
+				if(spectator == p) return true;					
+		}	
 		return false;
 	}
 	

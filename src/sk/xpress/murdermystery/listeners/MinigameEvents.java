@@ -82,9 +82,9 @@ public class MinigameEvents implements Listener  {
 			List<Player> murders = new ArrayList<Player>();
 			
 			Chat.print("IN PROGRESS");
-			Collection<? extends Player> _players = Bukkit.getOnlinePlayers();
+			
 			List<Player> players = new ArrayList<Player>();
-			for(Player p : _players) players.add(p);
+			for(Player p : Bukkit.getOnlinePlayers()) players.add(p);
 			
 			int playerCount = players.size();
 			
