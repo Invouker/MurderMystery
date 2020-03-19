@@ -4,5 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/GB-PC/Desktop/Java External Files/spigot-1.15.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/GB-PC/Desktop/Java External Files/Spigot-API-1.14.4-8887c5f-20190730-1052.jar"/>
+	<classpathentry kind="lib" path="F:/MCServers/MurderMystery/lombok.jar"/>
+	<classpathentry kind="lib" path="F:/MCServers/MurderMystery/plugins/Minigame_API.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

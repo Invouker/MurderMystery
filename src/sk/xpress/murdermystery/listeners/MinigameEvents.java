@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,6 +20,7 @@ import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.handler.GoldGenerator;
 import sk.xpress.murdermystery.handler.Roles;
 
 public class MinigameEvents implements Listener  {
@@ -67,6 +69,8 @@ public class MinigameEvents implements Listener  {
 		if(e.getState() == MinigameState.InProgress) {
 			// SAMOTNE JADRO HRY SPUSTIç....
 			// ROZDELIT ROLE - INNOCENT/DETECTIVE/MURDER
+			goldSpawner();
+			
 			Random rand = new Random();
 			
 			List<Player> detectives = new ArrayList<Player>();
@@ -96,6 +100,34 @@ public class MinigameEvents implements Listener  {
 			API.getMinigame().getRoles().put(Roles.DETECTIVE.getName(), detectives);
 			API.getMinigame().getRoles().put(Roles.INNOCENT.getName(), players);
 			API.getMinigame().getRoles().put(Roles.MURDER.getName(), murders);
+			
+			
 		}
+		
+		
+		
+	}
+	
+	
+	public void goldSpawner() {
+		int respawnTime = Main.getInstance().getConfig().getInt("murdermystery.options.gold-spawner-rate");
+		String world = Main.getInstance().getConfig().getString("murdermystery.options.gold-spawner-world");
+		World w = Bukkit.getWorld(world);
+		
+		if(w == null) throw new NullPointerException("Gold spawner world cannot be null or world doesnt exists.");
+		
+		BukkitTask task = new BukkitRunnable() {
+			int goldSpawnedOnce = Main.getInstance().getConfig().getInt("murdermystery.options.max-gold-spawned-once");
+			
+			
+			@Override
+			public void run() {
+				if(Main.getInstance().getGoldSpawned() < goldSpawnedOnce) {
+					new GoldGenerator(w);
+				}
+			}
+			
+		}.runTaskTimer(Main.getInstance(), 0L, respawnTime*20L);
+		Main.getTasks().put("GoldSpawner", task);
 	}
 }

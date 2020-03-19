@@ -39,6 +39,8 @@ public class Main extends JavaPlugin {
 	@Getter @Setter private static Location arenaMin;
 	@Getter @Setter private static Location arenaMax;
 	
+	@Getter @Setter private int goldSpawned;
+	
 	@Override
 	public void onEnable() {
 		instance = this;

@@ -1,5 +1,10 @@
 #Setup MurderMystery
 murdermystery:
+  options:
+    #1 gold per 4 seconds
+    gold-spawner-rate: 4
+    max-gold-spawned-once: 64
+    gold-spawner-world: world
   arena:
     max: 
       x: -220
