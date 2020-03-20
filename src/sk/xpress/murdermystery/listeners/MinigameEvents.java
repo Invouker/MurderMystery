@@ -91,7 +91,7 @@ public class MinigameEvents implements Listener  {
 			for(Player p : Bukkit.getOnlinePlayers()) players.add(p);
 			
 			int playerCount = players.size();
-			
+				
 			if(players.size() >= 1) {
 				Player detective = players.get(rand.nextInt(playerCount)); // -1 - pridaù
 				players.remove(detective);
@@ -110,8 +110,11 @@ public class MinigameEvents implements Listener  {
 				players.remove(murder);
 				murders.add(murder);
 				murder.sendTitle("ßeYou are", "ßcßlMURDER",20,40,20);
+				
+				ItemStack sword = new ItemBuilder(Material.IRON_SWORD).setName(ComponentBuilder.text("ßcMurder's Sword").build()).build();
+				murder.getInventory().setItem(1, sword);
 			}
-			
+
 			for(Player p : players) p.sendTitle("ßeYou are", "ßaßlINNOCENT",20,40,20);
 			
 			Chat.print("DETECTIVES: " + detectives);

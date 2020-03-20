@@ -3,18 +3,23 @@ package sk.xpress.murdermystery.listeners;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
+import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
 import sk.xpress.murdermystery.ActionBar;
+import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.handler.Roles;
 
 public class PlayerPickupItem implements Listener {
 	
@@ -70,7 +75,6 @@ public class PlayerPickupItem implements Listener {
 							p.getInventory().getItem(4).setAmount(p.getInventory().getItem(4).getAmount()-10);
 						}
 						
-												
 						return;
 					}
 					
@@ -79,7 +83,24 @@ public class PlayerPickupItem implements Listener {
 				}
 				
 				case BOW: {
-					if(Main.isPlayerInnocent(p)) return;
+					if(Main.isPlayerInnocent(p)) { //return; // DOROBIT, ŽE SA STANE DETECTIVOM
+						
+						if(Cooldown.hasCooldown("DetectiveDropSword"+p.getName())) {
+							e.setCancelled(true);
+							return;
+						}
+						
+						Main.getDetectiveBow().destroy();
+						
+						API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).add(p);
+						Chat.print("Hráè " + p.getName() + " sa stal detektivom!");
+						
+						ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
+						ItemStack arrow = new ItemBuilder(Material.ARROW).build();
+						
+						p.getInventory().setItem(8, bow);
+						p.getInventory().setItem(35, arrow);
+					}
 					
 					e.setCancelled(true);
 					break;

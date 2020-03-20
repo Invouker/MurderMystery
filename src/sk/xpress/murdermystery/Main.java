@@ -18,9 +18,12 @@ import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.api.MinigameState;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.handler.DetectiveBow;
 import sk.xpress.murdermystery.handler.Roles;
+import sk.xpress.murdermystery.listeners.ItemDespawnListener;
 import sk.xpress.murdermystery.listeners.JoinQuit;
 import sk.xpress.murdermystery.listeners.MinigameEvents;
+import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.Test;
 import sk.xpress.murdermystery.listeners.ThrowableSword;
@@ -76,6 +79,8 @@ public class Main extends JavaPlugin {
 		return this.goldSpawned;
 	}
 	
+	private static DetectiveBow detectiveSword;
+	
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -91,6 +96,9 @@ public class Main extends JavaPlugin {
 		initializePositions();
 				
 		API.registerMinigame(new MurderMystery());
+		
+		detectiveSword = new DetectiveBow();
+		
 	}
 	
 	public void onDisable() {
@@ -98,6 +106,8 @@ public class Main extends JavaPlugin {
 			BukkitTask task = entry.getValue();
 			if(task != null) task.cancel();
 		}
+		
+		detectiveSword.destroy();
 	}
 
 	public void listeners() {
@@ -106,8 +116,11 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new JoinQuit(), this);
 		pm.registerEvents(new MinigameEvents(), this);
 		pm.registerEvents(new PlayerPickupItem(), this);
+		pm.registerEvents(new PlayerDropItemListener(), this);
+		pm.registerEvents(new ItemDespawnListener(), this);
 		
 		pm.registerEvents(new ThrowableSword(), this);
+		
 	}
 	
 	public void commandManager() {
@@ -217,5 +230,9 @@ public class Main extends JavaPlugin {
 				if(murder == p) return true;					
 		}
 		return false;
+	}
+	
+	public static DetectiveBow getDetectiveBow() {
+		return detectiveSword;
 	}
 }
