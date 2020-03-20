@@ -26,6 +26,8 @@ import sk.xpress.murdermystery.handler.Chat;
 
 public class ThrowableSword implements Listener {
 	
+	private final int swordCooldown = Main.getInstance().getConfig().getInt("murdermystery.options.murder.sword-cooldown");
+	
 	@EventHandler
 	public void onThrowSword(PlayerInteractEvent e) {
 		Action a = e.getAction();
@@ -36,13 +38,11 @@ public class ThrowableSword implements Listener {
 		if(is == null) return;	
 		if(is.getType() != Material.IRON_SWORD) return;
 		if(Main.getTasks().get("Sword") != null) return;
-		if(Cooldown.hasCooldown("Sword")) {
-			ActionBar.sendActionBar(p, ComponentBuilder.text("E�te m� " + Cooldown.getTimeCooldown("Sword") + "sek cooldown").build());
-			return;
-		}
+		if(Cooldown.hasCooldown("Sword")) return;
+		else Main.getInstance().taskCancel("Cooldown:Sword:"+p.getName());
 		
 		
-		//if(!Main.isPlayerMurder(p)) return; // v koment�r�, kv�li testovaniu!
+		//if(!Main.isPlayerMurder(p)) return; // v komentárí, kvôli testovaniu!
 		
 		Location loc = p.getLocation();
 		
@@ -59,7 +59,22 @@ public class ThrowableSword implements Listener {
 		
 		as.setRightArmPose(new EulerAngle(6.15, 0, 4.73));	
 		
-		new Cooldown("Sword", 10);
+		new Cooldown("Sword", swordCooldown);
+		
+		BukkitTask swordTask = new BukkitRunnable() {
+			@Override
+			public void run() {
+				int cooldown = Cooldown.getTimeCooldown("Sword");
+				if(cooldown <= 0) {
+					p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, 8F, 8F);
+					Main.getInstance().taskCancel("Cooldown:Sword:"+p.getName());
+					this.cancel();
+				}
+				ActionBar.sendActionBar(Bukkit.getPlayer("XpresS"), ComponentBuilder.text(calculateCooldown(cooldown)).build());
+			}
+			
+		}.runTaskTimer(Main.getInstance(), 0L, 10L);
+		Main.getTasks().put("Cooldown:Sword:"+p.getName(), swordTask);
 		
 		BukkitTask task = new BukkitRunnable() {
 			@Override
@@ -67,7 +82,6 @@ public class ThrowableSword implements Listener {
 				as.teleport(as.getLocation().add(dir));
 				
 				if(as.getLocation().add(dir).getBlockY() >= 200) {
-					Chat.print("ARMORSTAND IS ABOVE Y 200");
 					Main.getInstance().taskCancel("Sword");
 					as.remove();
 				}
@@ -77,9 +91,7 @@ public class ThrowableSword implements Listener {
 				if (block.getWorld().getBlockAt(topHalfAsLoc).getType() == Material.AIR) {
 					for (Player p1 : Bukkit.getOnlinePlayers()) {
                    	 if (p1 != p && p1.getLocation().distance(as.getLocation()) <= 1D) {
-                        Chat.print("Trafil si hr��a! " + p1.getName());
-                        
-                        
+
                         Chat.print("HIT");
                         Main.getInstance().taskCancel("Sword");
     					as.remove();
@@ -89,7 +101,6 @@ public class ThrowableSword implements Listener {
                      }
                    }
 				}else {
-					Chat.print("HITTED BLOCK");
 					Main.getInstance().taskCancel("Sword");
 					as.remove();
 				}
@@ -98,6 +109,23 @@ public class ThrowableSword implements Listener {
 		}.runTaskTimer(Main.getInstance(), 0L, 1L);
 		Main.getTasks().put("Sword", task);
 		
+	}
+	
+	public String calculateCooldown(int perc) { // hodnoty od 1-10
+		switch(perc%10) {
+		  case 0: return "§7[§a▮▮▮▮▮▮▮▮▮▮§7]";
+	      case 1: return "§7[§a▮▮▮▮▮▮▮▮▮§c▮§7]";
+	      case 2: return "§7[§a▮▮▮▮▮▮▮▮§c▮▮§7]";
+	      case 3: return "§7[§a▮▮▮▮▮▮▮§c▮▮▮§7]";
+	      case 4: return "§7[§a▮▮▮▮▮▮§c▮▮▮▮§7]";
+	      case 5: return "§7[§a▮▮▮▮▮§c▮▮▮▮▮§7]";
+	      case 6: return "§7[§a▮▮▮▮§c▮▮▮▮▮▮§7]";
+	      case 7: return "§7[§a▮▮▮§c▮▮▮▮▮▮▮§7]";
+	      case 8: return "§7[§a▮▮§c▮▮▮▮▮▮▮▮§7]";
+	      case 9: return "§7[§a▮§c▮▮▮▮▮▮▮▮▮§7]";
+	      case 10: return "§7§l[§c▮▮▮▮▮▮▮▮▮▮§7§l]";
+	      default: return "";
+	    }
 	}
 
 }

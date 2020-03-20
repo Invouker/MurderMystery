@@ -5,10 +5,14 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -17,6 +21,7 @@ import net.graymadness.minigame_api.api.MinigameState;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
+import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.GoldGenerator;
@@ -87,14 +92,20 @@ public class MinigameEvents implements Listener  {
 			
 			int playerCount = players.size();
 			
-			if(players.size() > 1) {
+			if(players.size() >= 1) {
 				Player detective = players.get(rand.nextInt(playerCount)); // -1 - prida
 				players.remove(detective);
 				detectives.add(detective);
 				detective.sendTitle("§eYou are", "§9§lDETECTIVE",20,40,20);
+				
+				ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
+				ItemStack arrow = new ItemBuilder(Material.ARROW).build();
+				
+				detective.getInventory().setItem(8, bow);
+				detective.getInventory().setItem(35, arrow);
 			}
 			
-			if(players.size() > 1) {
+			if(players.size() >= 1) {
 				Player murder = players.get(rand.nextInt(playerCount)); // -1
 				players.remove(murder);
 				murders.add(murder);

@@ -31,6 +31,9 @@ public class JoinQuit implements Listener {
 			return;
 		}
 		
+		e.getPlayer().getInventory().clear();
+		e.getPlayer().getInventory().setHeldItemSlot(0);
+		
 		double x = Main.getInstance().getConfig().getDouble("murdermystery.join.position.x");
 		double y = Main.getInstance().getConfig().getDouble("murdermystery.join.position.y");
 		double z = Main.getInstance().getConfig().getDouble("murdermystery.join.position.z");

@@ -46,7 +46,6 @@ public class MurderMystery implements IMinigame {
 	@Override
 	public void start() {
 		
-		Chat.print("START");
 	}
 
 	@Override

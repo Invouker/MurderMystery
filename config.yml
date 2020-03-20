@@ -1,6 +1,8 @@
 #Setup MurderMystery
 murdermystery:
   options:
+    murder:
+      sword-cooldown: 10 # in seconds
     #1 gold per 4 seconds
     gold-spawner-rate: 4
     max-gold-spawned-once: 4
