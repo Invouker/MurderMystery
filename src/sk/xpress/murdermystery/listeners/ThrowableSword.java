@@ -17,7 +17,9 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
+import sk.xpress.murdermystery.ActionBar;
 import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
@@ -34,7 +36,11 @@ public class ThrowableSword implements Listener {
 		if(is == null) return;	
 		if(is.getType() != Material.IRON_SWORD) return;
 		if(Main.getTasks().get("Sword") != null) return;
-		if(Cooldown.hasCooldown("Sword")) return;
+		if(Cooldown.hasCooldown("Sword")) {
+			ActionBar.sendActionBar(p, ComponentBuilder.text("Ešte máš " + Cooldown.getTimeCooldown("Sword") + "sek cooldown").build());
+			return;
+		}
+		
 		
 		//if(!Main.isPlayerMurder(p)) return; // v komentárí, kvôli testovaniu!
 		

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import sk.xpress.murdermystery.Main;
-import sk.xpress.murdermystery.handler.Chat;
 
 public class PlayerPickupItem implements Listener {
 	
