@@ -18,6 +18,7 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
+import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
 
@@ -33,6 +34,9 @@ public class ThrowableSword implements Listener {
 		if(is == null) return;	
 		if(is.getType() != Material.IRON_SWORD) return;
 		if(Main.getTasks().get("Sword") != null) return;
+		if(Cooldown.hasCooldown("Sword")) return;
+		
+		//if(!Main.isPlayerMurder(p)) return; // v komentárí, kvôli testovaniu!
 		
 		Location loc = p.getLocation();
 		
@@ -44,10 +48,12 @@ public class ThrowableSword implements Listener {
 		as.setGravity(false);
 		as.setCanPickupItems(false);
 		as.setArms(true);
+		as.setInvulnerable(true);
+		as.setVisible(false);
 		
 		as.setRightArmPose(new EulerAngle(6.15, 0, 4.73));	
 		
-		
+		new Cooldown("Sword", 10);
 		
 		BukkitTask task = new BukkitRunnable() {
 			@Override
@@ -72,7 +78,8 @@ public class ThrowableSword implements Listener {
                         Main.getInstance().taskCancel("Sword");
     					as.remove();
     					
-    					for(Player _p : Bukkit.getOnlinePlayers()) _p.playSound(_p.getLocation(), Sound.ENTITY_PLAYER_ATTACK_NODAMAGE, 2f, 2f);
+    					for(Player target : Bukkit.getOnlinePlayers()) if(p != target) target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_DEATH, 2f, 2f);
+    					
                      }
                    }
 				}else {
@@ -82,7 +89,7 @@ public class ThrowableSword implements Listener {
 				}
 			}
 			
-		}.runTaskTimer(Main.getInstance(), 0L, 2L);
+		}.runTaskTimer(Main.getInstance(), 0L, 1L);
 		Main.getTasks().put("Sword", task);
 		
 	}
