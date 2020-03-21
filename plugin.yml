@@ -2,7 +2,7 @@ name: MurderMystery
 main: sk.xpress.murdermystery.Main
 version: 1.0
 description: Murder Mystery
-author: XPresS
+author: XpresS
 
 softdepend: [Minigame_API, ProtocolLib]
 

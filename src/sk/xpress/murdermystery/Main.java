@@ -35,6 +35,7 @@ import sk.xpress.murdermystery.listeners.MinigameEndedListener;
 import sk.xpress.murdermystery.listeners.MinigameStart;
 import sk.xpress.murdermystery.listeners.MinigameStateChangeListener;
 import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
+import sk.xpress.murdermystery.listeners.PlayerItemConsumeListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.ProjectileHit;
 import sk.xpress.murdermystery.listeners.Test;
@@ -144,7 +145,9 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new EntityDamageListener(), this);
 		pm.registerEvents(new FoodLevelChangeListener(), this);
 		pm.registerEvents(new ProjectileHit(), this);
+		
 		pm.registerEvents(new CauldronListener(), this);
+		pm.registerEvents(new PlayerItemConsumeListener(), this);
 		
 		pm.registerEvents(new MinigameStateChangeListener(), this);
 		pm.registerEvents(new MinigameStart(), this);

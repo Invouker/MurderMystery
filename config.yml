@@ -18,6 +18,17 @@ murdermystery:
       y: 77
       z: 159
       world: world
+    cauldrons:
+      '0':
+        x: -210
+        y: 78
+        z:  164
+        world: world
+      '1':
+        x: -218
+        y: 78
+        z:  166
+        world: world
   join:
     position:
       x: -204.5
