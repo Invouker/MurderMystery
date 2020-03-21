@@ -21,7 +21,6 @@ import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import sk.xpress.murdermystery.Cauldron;
 import sk.xpress.murdermystery.Main;
-import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
 public class CauldronListener implements Listener {

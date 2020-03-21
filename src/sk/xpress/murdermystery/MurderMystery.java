@@ -13,12 +13,15 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.sun.istack.internal.NotNull;
 
+import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.api.IMinigame;
 import net.graymadness.minigame_api.api.MinigameState;
+import net.graymadness.minigame_api.event.MinigameEndedEvent;
 import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.md_5.bungee.api.ChatColor;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.listeners.JoinQuit;
 
 public class MurderMystery implements IMinigame {
  
@@ -108,7 +111,20 @@ public class MurderMystery implements IMinigame {
 
 	@Override
 	public void stop() {
-		Chat.print("STOP");
+		if(API.getMinigame().getState() != MinigameState.Lobby || API.getMinigame().getState() != MinigameState.PostGame) {
+			
+			for(Map.Entry<String, BukkitTask> entry : Main.getTasks().entrySet()) { // vypnuť všetký tasks
+				BukkitTask task = entry.getValue();
+				if(task != null) task.cancel();
+			}
+			
+		//	for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerLeave(p);
+			
+			MinigameEndedEvent endEvent  = new MinigameEndedEvent(API.getMinigame());
+		    Bukkit.getPluginManager().callEvent(endEvent);
+		    
+		    for(Player p : Bukkit.getOnlinePlayers()) ChatInfo.ERROR.send(p, ComponentBuilder.text("Hra bola predbežne stopnutá!").build());
+		}
 	}
 		
 }
