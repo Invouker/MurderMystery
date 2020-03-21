@@ -11,6 +11,7 @@ import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
+import sk.xpress.murdermystery.TeamManager;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
@@ -21,25 +22,31 @@ public class PlayerDropItemListener implements Listener {
 		Player p = e.getPlayer();
 		
 		switch(e.getItemDrop().getItemStack().getType()) {
-			case GOLD_INGOT: {
+			case GOLD_INGOT: 
+			case IRON_SWORD: 
+			case ARROW: {
 				e.setCancelled(true);
 				break;
 			}
+			
 			case BOW: {
 				if(Main.isPlayerInnocent(p)) {
 					e.setCancelled(true);
 				}
 				
 				if(Main.isPlayerDetective(p)) { // DROPNE ITEM, A ZMENI SA NA INNOCENTA		
-					Main.getDetectiveBow().setLocation(e.getItemDrop().getLocation());
 					
-					
+					Main.getDetectiveBow().setLocation(e.getItemDrop().getLocation());	
 					Main.getDetectiveBow().spawn();
 					
 					API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).remove(p);
 					API.getMinigame().getRoles().get(Roles.INNOCENT.getName()).add(p);
 					Chat.print("Hr·Ë " + p.getName() + " sa stal innocentom!");
 					
+					p.setPlayerListName("ße" + p.getName());
+					
+					TeamManager.removeTeam(p);
+					TeamManager.addTeamToPlayer(p, Roles.INNOCENT);
 
 					new Cooldown("DetectiveDropSword"+p.getName(), 2);
 					
@@ -55,11 +62,7 @@ public class PlayerDropItemListener implements Listener {
 				}
 				break;
 			}
-			
-			case IRON_SWORD: {
-				e.setCancelled(true);
-				break;
-			}
+
 			default:break;
 		}
 	}

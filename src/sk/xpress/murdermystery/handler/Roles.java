@@ -6,6 +6,7 @@ public enum Roles {
 	DETECTIVE("Detective"),
 	MURDER("Murder"),
 	SPECTATOR("Spectator"),
+	ALIVE("Alive"),
 	NONE("");
 	
 	private String name;

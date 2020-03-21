@@ -18,6 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 import sk.xpress.murdermystery.ActionBar;
 import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
+import sk.xpress.murdermystery.TeamManager;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
@@ -37,11 +38,7 @@ public class PlayerPickupItem implements Listener {
 					
 					//if(Main.isPlayerDetective(p)) return;
 					if(Main.isPlayerInnocent(p) || Main.isPlayerDetective(p)) {
-						
-						
-						
-						
-						
+
 						int amountGolds = 0;
 						if(p.getInventory().getItem(4) != null) amountGolds = p.getInventory().getItem(4).getAmount();
 						
@@ -90,12 +87,18 @@ public class PlayerPickupItem implements Listener {
 							return;
 						}
 						
+						p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 6f, 6f);
+						
 						Main.getDetectiveBow().destroy();
+						
+						p.setPlayerListName("ß9" + p.getName());
+						TeamManager.removeTeam(p);
+						TeamManager.addTeamToPlayer(p, Roles.DETECTIVE);
 						
 						API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).add(p);
 						Chat.print("Hr·Ë " + p.getName() + " sa stal detektivom!");
 						
-						ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
+						ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("ß9Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
 						ItemStack arrow = new ItemBuilder(Material.ARROW).build();
 						
 						p.getInventory().setItem(8, bow);

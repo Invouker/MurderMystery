@@ -7,36 +7,52 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import net.graymadness.minigame_api.api.API;
+import net.graymadness.minigame_api.api.IMinigame;
 import net.graymadness.minigame_api.api.MinigameState;
+import net.graymadness.minigame_api.event.MinigameEndedEvent;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.DetectiveBow;
+import sk.xpress.murdermystery.handler.EntityDamageListener;
+import sk.xpress.murdermystery.handler.FoodLevelChangeListener;
 import sk.xpress.murdermystery.handler.Roles;
+import sk.xpress.murdermystery.listeners.ASyncChatListener;
 import sk.xpress.murdermystery.listeners.ItemDespawnListener;
 import sk.xpress.murdermystery.listeners.JoinQuit;
 import sk.xpress.murdermystery.listeners.MinigameEvents;
+import sk.xpress.murdermystery.listeners.MinigameStart;
 import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
+import sk.xpress.murdermystery.listeners.ProjectileHit;
 import sk.xpress.murdermystery.listeners.Test;
 import sk.xpress.murdermystery.listeners.ThrowableSword;
 
 
 public class Main extends JavaPlugin {
 
+	/*
+	 * MinigameEndedEvent endEvent  = new MinigameEndedEvent(API.getMinigame());
+       Bukkit.getPluginManager().callEvent(endEvent);
+	 * */
+	
 	private static Main instance;
 	public static Main getInstance() { 
 		return instance; 
 	}
-	private static MinigameState state = MinigameState.Lobby;
-	public static MinigameState getState() {
+	private MinigameState state = MinigameState.Lobby;
+	public MinigameState getState() {
 		return state;
 	}
 	
@@ -99,6 +115,9 @@ public class Main extends JavaPlugin {
 		
 		detectiveSword = new DetectiveBow();
 		
+		for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerJoin(p);	
+		
+		API.getMinigame().getRoles().put(Roles.SPECTATOR.getName(), new ArrayList<Player>());
 	}
 	
 	public void onDisable() {
@@ -108,6 +127,8 @@ public class Main extends JavaPlugin {
 		}
 		
 		detectiveSword.destroy();
+		
+		for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerLeave(p);
 	}
 
 	public void listeners() {
@@ -118,6 +139,12 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new PlayerPickupItem(), this);
 		pm.registerEvents(new PlayerDropItemListener(), this);
 		pm.registerEvents(new ItemDespawnListener(), this);
+		pm.registerEvents(new EntityDamageListener(), this);
+		pm.registerEvents(new FoodLevelChangeListener(), this);
+		pm.registerEvents(new ProjectileHit(), this);
+		pm.registerEvents(new MinigameStart(), this);
+		
+		pm.registerEvents(new ASyncChatListener(), this);
 		
 		pm.registerEvents(new ThrowableSword(), this);
 		
@@ -174,13 +201,16 @@ public class Main extends JavaPlugin {
 	
 	public void setGameState(MinigameState gameState) {	
 		state = gameState;
-		MinigameStateChangedEvent stateChangeEvent = new MinigameStateChangedEvent(API.getMinigame(), gameState);
+		IMinigame game = API.getMinigame();
+		if(game == null) throw new RuntimeException("Api - GetMinigame cannot be initialized and called event!");
+		MinigameStateChangedEvent stateChangeEvent = new MinigameStateChangedEvent(game, gameState);
+		
 		Bukkit.getPluginManager().callEvent(stateChangeEvent);
 	}
 	
 	public void taskCancel(String task) {
 		if(tasks.containsKey(task)) {
-			if(tasks.get(task) != null) {
+			if(!tasks.get(task).isCancelled()) {
 				tasks.get(task).cancel();
 				tasks.remove(task);
 			}
@@ -234,5 +264,18 @@ public class Main extends JavaPlugin {
 	
 	public static DetectiveBow getDetectiveBow() {
 		return detectiveSword;
+	}
+	
+	public static void removeAllDroppedGold(String worldName) {
+		World w = Bukkit.getWorld(worldName);
+		for(Entity ent : w.getEntities()) {
+			if(ent instanceof Item) {
+				Item item = (Item) ent;
+				ItemStack is = item.getItemStack();
+				if(is.getType() == Material.GOLD_INGOT) {
+					ent.remove();
+				}
+			}
+		}
 	}
 }

@@ -1,6 +1,9 @@
 package sk.xpress.murdermystery.listeners;
 
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -17,12 +20,17 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
+import net.graymadness.minigame_api.api.API;
+import net.graymadness.minigame_api.event.MinigameEndedEvent;
+import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
+import net.md_5.bungee.api.ChatColor;
 import sk.xpress.murdermystery.ActionBar;
 import sk.xpress.murdermystery.Cooldown;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.handler.Roles;
 
 public class ThrowableSword implements Listener {
 	
@@ -70,7 +78,7 @@ public class ThrowableSword implements Listener {
 					Main.getInstance().taskCancel("Cooldown:Sword:"+p.getName());
 					this.cancel();
 				}
-				ActionBar.sendActionBar(Bukkit.getPlayer("XpresS"), ComponentBuilder.text(calculateCooldown(cooldown)).build());
+				ActionBar.sendActionBar(p, ComponentBuilder.text(calculateCooldown(cooldown)).build());
 			}
 			
 		}.runTaskTimer(Main.getInstance(), 0L, 10L);
@@ -89,14 +97,45 @@ public class ThrowableSword implements Listener {
 				Block block = as.getLocation().add(dir).getBlock();
 				Location topHalfAsLoc = block.getLocation().add(0, 1, 0);
 				if (block.getWorld().getBlockAt(topHalfAsLoc).getType() == Material.AIR) {
-					for (Player p1 : Bukkit.getOnlinePlayers()) {
-                   	 if (p1 != p && p1.getLocation().distance(as.getLocation()) <= 1D) {
+					for (Iterator<Player> it = API.getMinigame().getRoles().get(Roles.ALIVE.getName()).iterator(); it.hasNext();) { //KONTROLA AK Už všetkých zabil !!!
+					Player target = it.next();
+                   	 if (target != p && target.getLocation().distance(as.getLocation()) <= 1D) {
 
-                        Chat.print("HIT");
+                   		 if(Main.isPlayerDetective(target)) {
+                   			API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).remove(target);                  			
+                   			it.remove();// REMOVE FROM ALIVE LIST
+                   			
+                   			API.getMinigame().getRoles().get(Roles.SPECTATOR.getName()).add(target);
+                   			for(Player player : Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(player, ComponentBuilder.text("Detektiv bol zabitý!").color(ChatColor.BLUE).build());
+                   			
+                   			target.getInventory().clear();
+                   			
+                   			Main.getDetectiveBow().setLocation(target.getLocation().add(0, 1, 0));	
+        					Main.getDetectiveBow().spawn();
+        					
+        					target.setGameMode(GameMode.SPECTATOR);
+        					
+        					MinigameEndedEvent endEvent  = new MinigameEndedEvent(API.getMinigame());
+        					Bukkit.getPluginManager().callEvent(endEvent);
+                   		 }
+                   		 
+                   		 if(Main.isPlayerInnocent(target)) {
+                   			API.getMinigame().getRoles().get(Roles.INNOCENT.getName()).remove(target);   
+                   			it.remove(); // REMOVE FROM ALIVE LIST
+                   			API.getMinigame().getRoles().get(Roles.SPECTATOR.getName()).add(target);
+                   			
+                   			target.getInventory().clear();
+                   			
+                   			target.setGameMode(GameMode.SPECTATOR);
+                   			Chat.print("Innocent bol zabity");
+                   		 }
+                   		 
+                 
+                   		 
                         Main.getInstance().taskCancel("Sword");
     					as.remove();
     					
-    					for(Player target : Bukkit.getOnlinePlayers()) if(p != target) target.playSound(target.getLocation(), Sound.ENTITY_PLAYER_DEATH, 2f, 2f);
+    					for(Player player : Bukkit.getOnlinePlayers()) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 2f, 2f);
     					
                      }
                    }

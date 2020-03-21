@@ -2,7 +2,6 @@ package sk.xpress.murdermystery.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import sk.xpress.murdermystery.DefaultFontInfo;
 
@@ -13,11 +12,9 @@ public class Chat {
 		Bukkit.getConsoleSender().sendMessage(cPrefix + msg);
 	}
 	
-	public static void sendCentredMessage(Player player, String message) {
-	    if(message == null || message.equals("")) {
-	        player.sendMessage("");
-	        return;
-	    }
+	public static String getCentredMessage(String message) {
+	    if(message == null || message.equals("")) return "";
+	    
 	    message = ChatColor.translateAlternateColorCodes('&', message);
 	 
 	    int messagePxSize = 0;
@@ -46,6 +43,6 @@ public class Chat {
 	        sb.append(" ");
 	        compensated += spaceLength;
 	    }
-	    player.sendMessage(sb.toString() + message);
+	    return (sb.toString() + message);
 	}
 }
