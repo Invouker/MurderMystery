@@ -23,7 +23,7 @@ import sk.xpress.murdermystery.TeamManager;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
-public class MinigameEvents implements Listener  {
+public class MinigameStateChangeListener implements Listener  {
 
 	@EventHandler
 	public void onGameStateChange(MinigameStateChangedEvent e) {
@@ -37,11 +37,12 @@ public class MinigameEvents implements Listener  {
 			
 			List<Player> players = new ArrayList<>();
 			for(Player p : Bukkit.getOnlinePlayers()) {
-				TeamManager.addTeamToPlayer(p, Roles.INNOCENT);
 				players.add(p);
+				TeamManager.addTeamToPlayer(p, Roles.INNOCENT);
 			}
 			
-			API.getMinigame().getRoles().put(Roles.ALIVE.getName(), players);	
+			API.getMinigame().getRoles().put(Roles.ALIVE.getName(), new ArrayList<Player>(players));	
+			Chat.print("StateChane: ALIVES: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()));
 			
 			int playerCount = players.size();
 			
@@ -72,6 +73,7 @@ public class MinigameEvents implements Listener  {
 			Chat.print("DETECTIVES: " + detectives);
 			Chat.print("MUDERS: " + murders);
 			Chat.print("INNOCENTS: " + players);
+			Chat.print("ALIVES: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()));
 			
 			API.getMinigame().getRoles().put(Roles.DETECTIVE.getName(), detectives);
 			API.getMinigame().getRoles().put(Roles.INNOCENT.getName(), players);
@@ -85,6 +87,7 @@ public class MinigameEvents implements Listener  {
 				@Override
 				public void run() {
 					Chat.print("TIME: " + time);
+					
 					switch(time) {
 						case 20:{
 							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane sword o " + time + " sekúnd").build());

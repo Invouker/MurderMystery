@@ -1,6 +1,7 @@
 package sk.xpress.murdermystery.listeners;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -97,48 +98,76 @@ public class ThrowableSword implements Listener {
 				Block block = as.getLocation().add(dir).getBlock();
 				Location topHalfAsLoc = block.getLocation().add(0, 1, 0);
 				if (block.getWorld().getBlockAt(topHalfAsLoc).getType() == Material.AIR) {
-					for (Iterator<Player> it = API.getMinigame().getRoles().get(Roles.ALIVE.getName()).iterator(); it.hasNext();) { //KONTROLA AK Už všetkých zabil !!!
-					Player target = it.next();
+					
+					List<Player> removeFromAlives = new ArrayList<Player>();
+			
+					for (Player target: API.getMinigame().getRoles().get(Roles.ALIVE.getName())) { //KONTROLA AK Už všetkých zabil !!!
+					//Player target = it.next();
                    	 if (target != p && target.getLocation().distance(as.getLocation()) <= 1D) {
 
+                   		 Chat.print("ALIVE SIZE: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()).size());
+                   		 
                    		 if(Main.isPlayerDetective(target)) {
                    			API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).remove(target);                  			
-                   			it.remove();// REMOVE FROM ALIVE LIST
+                   			//it.remove();// REMOVE FROM ALIVE LIST
                    			
                    			API.getMinigame().getRoles().get(Roles.SPECTATOR.getName()).add(target);
                    			for(Player player : Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(player, ComponentBuilder.text("Detektiv bol zabitý!").color(ChatColor.BLUE).build());
+                   			API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).remove(target);   
                    			
                    			target.getInventory().clear();
+                   			
+                   			removeFromAlives.add(target);
                    			
                    			Main.getDetectiveBow().setLocation(target.getLocation().add(0, 1, 0));	
         					Main.getDetectiveBow().spawn();
         					
         					target.setGameMode(GameMode.SPECTATOR);
         					
-        					MinigameEndedEvent endEvent  = new MinigameEndedEvent(API.getMinigame());
-        					Bukkit.getPluginManager().callEvent(endEvent);
                    		 }
                    		 
                    		 if(Main.isPlayerInnocent(target)) {
                    			API.getMinigame().getRoles().get(Roles.INNOCENT.getName()).remove(target);   
-                   			it.remove(); // REMOVE FROM ALIVE LIST
+                   			//it.remove(); // REMOVE FROM ALIVE LIST
                    			API.getMinigame().getRoles().get(Roles.SPECTATOR.getName()).add(target);
                    			
                    			target.getInventory().clear();
                    			
+                   			removeFromAlives.add(target);
+                   			
                    			target.setGameMode(GameMode.SPECTATOR);
                    			Chat.print("Innocent bol zabity");
+	
                    		 }
-                   		 
-                 
                    		 
                         Main.getInstance().taskCancel("Sword");
     					as.remove();
     					
-    					for(Player player : Bukkit.getOnlinePlayers()) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 2f, 2f);
-    					
+    					for(Player player : Bukkit.getOnlinePlayers()) player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 2f, 2f);	
                      }
                    }
+					
+					// 
+					
+					for(Player t : removeFromAlives) {
+						API.getMinigame().getRoles().get(Roles.ALIVE.getName()).remove(t);
+						
+						if(API.getMinigame().getRoles().get(Roles.ALIVE.getName()).size() <= 1) {
+							String detectiveName;
+							if(API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).size() >= 1 && API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).get(0) != null) 
+								detectiveName = API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).get(0).getName();
+							else detectiveName = "";
+               				
+							
+							
+    						Chat.sendMurderWinMessage(detectiveName, p.getName());        				
+    						
+    						MinigameEndedEvent endEvent  = new MinigameEndedEvent(API.getMinigame());
+    					    Bukkit.getPluginManager().callEvent(endEvent);
+    					}
+					}
+					
+					
 				}else {
 					Main.getInstance().taskCancel("Sword");
 					as.remove();

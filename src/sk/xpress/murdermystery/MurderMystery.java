@@ -54,8 +54,7 @@ public class MurderMystery implements IMinigame {
 
 	@Override
 	public void start() {
-		if(Main.getTasks().get("ToWarmUp") == null) {
-		 // ak je viac hráčov ako minimálne, spustí warmup 
+		if(Main.getTasks().get("ToWarmUp") == null) { // ak ešte nebeží!!
 			BukkitTask task = new BukkitRunnable() {
 				int i = 10;
 				@Override

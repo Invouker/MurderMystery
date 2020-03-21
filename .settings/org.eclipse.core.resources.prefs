@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/sk/xpress/murdermystery/MurderMystery.java=UTF-8
+encoding//src/sk/xpress/murdermystery/handler/Chat.java=UTF-8
+encoding//src/sk/xpress/murdermystery/listeners/ASyncChatListener.java=UTF-8
+encoding//src/sk/xpress/murdermystery/listeners/ProjectileHit.java=UTF-8
+encoding//src/sk/xpress/murdermystery/listeners/ThrowableSword.java=UTF-8

@@ -98,7 +98,7 @@ public class PlayerPickupItem implements Listener {
 						API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).add(p);
 						Chat.print("Hr·Ë " + p.getName() + " sa stal detektivom!");
 						
-						ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("ß9Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
+						ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("ß9Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).addItemFlag(ItemFlag.HIDE_UNBREAKABLE).build();
 						ItemStack arrow = new ItemBuilder(Material.ARROW).build();
 						
 						p.getInventory().setItem(8, bow);

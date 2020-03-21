@@ -9,8 +9,6 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 
 import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.api.MinigameState;
-import net.graymadness.minigame_api.helper.ChatInfo;
-import net.graymadness.minigame_api.helper.ComponentBuilder;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.TeamManager;
 import sk.xpress.murdermystery.handler.Chat;
@@ -25,11 +23,9 @@ public class ProjectileHit implements Listener {
 			arrow.remove();
 			
 			if(!(arrow.getShooter() instanceof Player) && !(e.getHitEntity() instanceof Player )) return;
-			Chat.print("3");
 			Player p = (Player) arrow.getShooter();
 			Player target = (Player) e.getHitEntity();
-			
-		
+
 			Chat.print("DETECT ROLE OF PLAYER: " + Main.playerDetectRole(p).getName());
 			Chat.print("DETECT ROLE OF TARGET: " + Main.playerDetectRole(target).getName());
 			
@@ -52,6 +48,7 @@ public class ProjectileHit implements Listener {
 				TeamManager.removeTeam(p);
 				TeamManager.removeTeam(target);
 		
+				
 				// ZABIL INNOCENTA 
 				// ?!?!? Čo sa opovažuje, buzerant :D
 			}
@@ -63,46 +60,26 @@ public class ProjectileHit implements Listener {
 				
 				Player detective = API.getMinigame().getRoles().get(Roles.DETECTIVE.getName()).get(0);
 				Player murder = API.getMinigame().getRoles().get(Roles.MURDER.getName()).get(0);
-				String heroName = null;
 				
-				Chat.print("DETECTIVE: " + detective.getName() + " MURDER: " + murder.getName() + " HERO: ");
 				
-				if(Main.isPlayerInnocent(p)) heroName = p.getName();
-				else heroName = "";
-				sendMessage(detective, detective.getName(), murder.getName(),"INNOCENTS", heroName);
-				detective.sendTitle("§aVYHRAL SI!", "§6Zabili ste vraha!", 20,40,20);
 				
-				for(Player player : API.getMinigame().getRoles().get(Roles.INNOCENT.getName())) {
-					sendMessage(player, detective.getName(), murder.getName(),"INNOCENTS", heroName);
-					player.sendTitle("§aVYHRAL SI!", "§6Zabili ste vraha!", 20,40,20);
+				if(Main.isPlayerInnocent(p)) {
+					String detectiveName;
+					if(detective == null) detectiveName = "";
+					else detectiveName = detective.getName();
+					
+					Chat.sendInnocentWinMessage(detectiveName, murder.getName(), p.getName());
 				}
 				
-				Main.removeAllDroppedGold("world");
-				Main.getInstance().taskCancel("GoldSpawner");
+				if(Main.isPlayerDetective(p)) {
+					Chat.sendInnocentWinMessage(p.getName(), murder.getName(), "");
+				}
+
 				
-				sendMessage(murder, detective.getName(), murder.getName(),"INNOCENTS", heroName);
-				murder.sendTitle("§aPREHRAL SI!", "§6Zabili ta!", 20,40,20);
-				
-				for(Player player : API.getMinigame().getRoles().get(Roles.ALIVE.getName())) player.getInventory().clear();
 				
 			}
 		}
 	}
 	
-	public void sendMessage(Player p, String detective, String murderer, String winner, String hero) {
-		p.sendMessage("");
-		p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-		p.sendMessage("");
-		ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMURDER MYSTERY")).build());
-		p.sendMessage("");
-		ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §a" + winner)).build());
-		p.sendMessage("");
-		if(detective != null) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §f" + detective)).build());
-		ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §f" + murderer)).build());
-		if(!hero.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lHero: §f" + hero)).build());
-		p.sendMessage("");
-		
-		p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
-	}
-	
+
 }

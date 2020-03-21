@@ -21,7 +21,6 @@ import org.bukkit.scheduler.BukkitTask;
 import net.graymadness.minigame_api.api.API;
 import net.graymadness.minigame_api.api.IMinigame;
 import net.graymadness.minigame_api.api.MinigameState;
-import net.graymadness.minigame_api.event.MinigameEndedEvent;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.DetectiveBow;
@@ -29,10 +28,12 @@ import sk.xpress.murdermystery.handler.EntityDamageListener;
 import sk.xpress.murdermystery.handler.FoodLevelChangeListener;
 import sk.xpress.murdermystery.handler.Roles;
 import sk.xpress.murdermystery.listeners.ASyncChatListener;
+import sk.xpress.murdermystery.listeners.CauldronListener;
 import sk.xpress.murdermystery.listeners.ItemDespawnListener;
 import sk.xpress.murdermystery.listeners.JoinQuit;
-import sk.xpress.murdermystery.listeners.MinigameEvents;
+import sk.xpress.murdermystery.listeners.MinigameEndedListener;
 import sk.xpress.murdermystery.listeners.MinigameStart;
+import sk.xpress.murdermystery.listeners.MinigameStateChangeListener;
 import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.ProjectileHit;
@@ -118,6 +119,7 @@ public class Main extends JavaPlugin {
 		for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerJoin(p);	
 		
 		API.getMinigame().getRoles().put(Roles.SPECTATOR.getName(), new ArrayList<Player>());
+		API.getMinigame().getRoles().put(Roles.ALIVE.getName(), new ArrayList<Player>());
 	}
 	
 	public void onDisable() {
@@ -135,14 +137,18 @@ public class Main extends JavaPlugin {
 		PluginManager pm = Bukkit.getPluginManager();
 		pm.registerEvents(new Test(), this);
 		pm.registerEvents(new JoinQuit(), this);
-		pm.registerEvents(new MinigameEvents(), this);
+		
 		pm.registerEvents(new PlayerPickupItem(), this);
 		pm.registerEvents(new PlayerDropItemListener(), this);
 		pm.registerEvents(new ItemDespawnListener(), this);
 		pm.registerEvents(new EntityDamageListener(), this);
 		pm.registerEvents(new FoodLevelChangeListener(), this);
 		pm.registerEvents(new ProjectileHit(), this);
+		pm.registerEvents(new CauldronListener(), this);
+		
+		pm.registerEvents(new MinigameStateChangeListener(), this);
 		pm.registerEvents(new MinigameStart(), this);
+		pm.registerEvents(new MinigameEndedListener(), this);
 		
 		pm.registerEvents(new ASyncChatListener(), this);
 		

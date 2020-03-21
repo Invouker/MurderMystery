@@ -39,7 +39,7 @@ public class MinigameStart implements Listener {
 		ItemStack sword = new ItemBuilder(Material.IRON_SWORD).setName(ComponentBuilder.text("§cMurder's Sword").build()).build();
 		murder.getInventory().setItem(1, sword);
 		
-		ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("§9Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
+		ItemStack bow = new ItemBuilder(Material.BOW).setName(ComponentBuilder.text("§9Detective's bow").build()).addEnchant(Enchantment.ARROW_INFINITE, 1).setUnbreakable().addItemFlag(ItemFlag.HIDE_UNBREAKABLE).addItemFlag(ItemFlag.HIDE_ENCHANTS).build();
 		ItemStack arrow = new ItemBuilder(Material.ARROW).build();
 		
 		detective.getInventory().setItem(8, bow);

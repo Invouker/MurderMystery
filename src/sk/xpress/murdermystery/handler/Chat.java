@@ -2,11 +2,14 @@ package sk.xpress.murdermystery.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
+import net.graymadness.minigame_api.helper.ChatInfo;
+import net.graymadness.minigame_api.helper.ComponentBuilder;
 import sk.xpress.murdermystery.DefaultFontInfo;
 
 public class Chat {
-	private final static String cPrefix = "[MurderMystery] �f";
+	private final static String cPrefix = "[MurderMystery] §f";
 	
 	public static void print(String msg) {
 		Bukkit.getConsoleSender().sendMessage(cPrefix + msg);
@@ -22,7 +25,7 @@ public class Chat {
 	    boolean isBold = false;
 	 
 	    for(char c : message.toCharArray()){
-	        if(c == '�'){
+	        if(c == '§'){
 	            previousCode = true;
 	        }else if(previousCode){
 	            previousCode = false;
@@ -44,5 +47,41 @@ public class Chat {
 	        compensated += spaceLength;
 	    }
 	    return (sb.toString() + message);
+	}
+	
+	
+	public static void sendInnocentWinMessage(String detective, String murderer, String hero) {
+		for(Player p: Bukkit.getOnlinePlayers()) {
+			p.sendMessage("");
+			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			p.sendMessage("");
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMURDER MYSTERY")).build());
+			p.sendMessage("");
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §aINNOCENT")).build());
+			p.sendMessage("");
+			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §f" + detective)).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §f" + murderer)).build());
+			if(!hero.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lHero: §f" + hero)).build());
+			p.sendMessage("");
+			
+			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+		}
+	}
+	
+	public static void sendMurderWinMessage(String detective, String murderer) {
+		for(Player p: Bukkit.getOnlinePlayers()) {
+			p.sendMessage("");
+			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+			p.sendMessage("");
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMURDER MYSTERY")).build());
+			p.sendMessage("");
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §cMURDER")).build());
+			p.sendMessage("");
+			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §f" + detective)).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §f" + murderer)).build());
+			p.sendMessage("");
+			
+			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
+		}
 	}
 }
