@@ -10,7 +10,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +37,7 @@ import sk.xpress.murdermystery.listeners.MinigameEndedListener;
 import sk.xpress.murdermystery.listeners.MinigameStart;
 import sk.xpress.murdermystery.listeners.MinigameStateChangeListener;
 import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
+import sk.xpress.murdermystery.listeners.PlayerHitEvent;
 import sk.xpress.murdermystery.listeners.PlayerItemConsumeListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
 import sk.xpress.murdermystery.listeners.ProjectileHit;
@@ -97,6 +100,11 @@ public class Main extends JavaPlugin {
 		return this.goldSpawned;
 	}
 	
+	private static List<Cauldron> cauldrons = new ArrayList<Cauldron>();
+	public static List<Cauldron> getCauldrons(){
+		return cauldrons;
+	}
+	
 	private static DetectiveBow detectiveSword;
 	
 	@Override
@@ -119,6 +127,8 @@ public class Main extends JavaPlugin {
 		
 		for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerJoin(p);	
 		
+		loadCauldrons();
+		
 		API.getMinigame().getRoles().put(Roles.SPECTATOR.getName(), new ArrayList<Player>());
 		API.getMinigame().getRoles().put(Roles.ALIVE.getName(), new ArrayList<Player>());
 	}
@@ -132,6 +142,8 @@ public class Main extends JavaPlugin {
 		detectiveSword.destroy();
 		
 		for(Player p : Bukkit.getOnlinePlayers()) JoinQuit.playerLeave(p);
+		
+		for(Cauldron caul : cauldrons) caul.getArmorStand().remove();
 	}
 
 	public void listeners() {
@@ -145,6 +157,7 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new EntityDamageListener(), this);
 		pm.registerEvents(new FoodLevelChangeListener(), this);
 		pm.registerEvents(new ProjectileHit(), this);
+		pm.registerEvents(new PlayerHitEvent(), this);
 		
 		pm.registerEvents(new CauldronListener(), this);
 		pm.registerEvents(new PlayerItemConsumeListener(), this);
@@ -157,6 +170,29 @@ public class Main extends JavaPlugin {
 		
 		pm.registerEvents(new ThrowableSword(), this);
 		
+	}
+	
+	public void loadCauldrons() {
+		ConfigurationSection cs = Main.getInstance().getConfig().getConfigurationSection("murdermystery.arena.cauldrons");
+		for(String s : cs.getKeys(false)) {
+			
+			double x = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".x");
+			double y = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".y");
+			double z = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".z");		
+			String world = Main.getInstance().getConfig().getString("murdermystery.arena.cauldrons." + s + ".world");
+			World w = Bukkit.getWorld(world);
+
+			Location loc = new Location(w, x, y, z);
+			Location asLoc = loc.clone();
+			ArmorStand as = (ArmorStand) w.spawnEntity(asLoc.add(0.5, -0.5, 0.5), EntityType.ARMOR_STAND);
+			
+			as.setCustomName("§eCOST §l2 GOLDS");
+			as.setCustomNameVisible(true);
+			as.setVisible(false);
+			as.setInvulnerable(true);
+			
+			cauldrons.add(new Cauldron(loc, as));
+		}
 	}
 	
 	public void commandManager() {

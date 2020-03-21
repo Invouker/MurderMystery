@@ -42,7 +42,7 @@ public class MinigameStateChangeListener implements Listener  {
 			}
 			
 			API.getMinigame().getRoles().put(Roles.ALIVE.getName(), new ArrayList<Player>(players));	
-			Chat.print("StateChane: ALIVES: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()));
+			//Chat.print("StateChane: ALIVES: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()));
 			
 			int playerCount = players.size();
 			
@@ -51,7 +51,7 @@ public class MinigameStateChangeListener implements Listener  {
 				Player detective = players.get(rand.nextInt(playerCount-1)); // -1 - pridaù
 				players.remove(detective);
 				detectives.add(detective);
-				detective.sendTitle("ßeYou are", "ß9ßlDETECTIVE",20,40,20);
+				detective.sendTitle("ßeTVOJA ROLA", "ß9ßlDETECTIVE",20,40,20);
 				
 				detective.setPlayerListName("ß9" + detective.getName());
 			}
@@ -60,21 +60,21 @@ public class MinigameStateChangeListener implements Listener  {
 				Player murder = players.get(rand.nextInt(playerCount-1)); // -1
 				players.remove(murder);
 				murders.add(murder);
-				murder.sendTitle("ßeYou are", "ßcßlMURDER",20,40,20);
+				murder.sendTitle("ßeTVOJA ROLA", "ßcßlMURDER",20,40,20);
 				murder.setPlayerListName("ße" + murder.getName());
 			}
 			
 
 			for(Player p : players) {
 				p.setPlayerListName("ße" + p.getName());
-				p.sendTitle("ßeYou are", "ßaßlINNOCENT",20,40,20);
+				p.sendTitle("ßeTVOJA ROLA", "ßaßlINNOCENT",20,40,20);
 			}
 			
-			Chat.print("DETECTIVES: " + detectives);
+			/*Chat.print("DETECTIVES: " + detectives);
 			Chat.print("MUDERS: " + murders);
 			Chat.print("INNOCENTS: " + players);
 			Chat.print("ALIVES: " + API.getMinigame().getRoles().get(Roles.ALIVE.getName()));
-			
+			*/
 			API.getMinigame().getRoles().put(Roles.DETECTIVE.getName(), detectives);
 			API.getMinigame().getRoles().put(Roles.INNOCENT.getName(), players);
 			API.getMinigame().getRoles().put(Roles.MURDER.getName(), murders);		

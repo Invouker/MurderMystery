@@ -123,21 +123,20 @@ public class ThrowableSword implements Listener {
         					Main.getDetectiveBow().spawn();
         					
         					target.setGameMode(GameMode.SPECTATOR);
-        					
+        					ChatInfo.GENERAL_INFO.send(target, ComponentBuilder.text("§c§lZOMREL SI!§e Bol si zabitý vrahom!").build());
+        					target.sendTitle("§c§lZOMREL SI", "", 20,40,20);
+        					for(Player player: Bukkit.getOnlinePlayers()) player.sendTitle("§9DETECETIVE", "Bol zabitý", 20, 40, 20);
                    		 }
                    		 
                    		 if(Main.isPlayerInnocent(target)) {
                    			API.getMinigame().getRoles().get(Roles.INNOCENT.getName()).remove(target);   
-                   			//it.remove(); // REMOVE FROM ALIVE LIST
                    			API.getMinigame().getRoles().get(Roles.SPECTATOR.getName()).add(target);
-                   			
                    			target.getInventory().clear();
                    			
                    			removeFromAlives.add(target);
-                   			
                    			target.setGameMode(GameMode.SPECTATOR);
-                   			Chat.print("Innocent bol zabity");
-	
+                   			ChatInfo.GENERAL_INFO.send(target, ComponentBuilder.text("§c§lZOMREL SI!§e Bol si zabitý vrahom!").build());
+                   			target.sendTitle("§c§lZOMREL SI", "", 20,40,20);
                    		 }
                    		 
                         Main.getInstance().taskCancel("Sword");

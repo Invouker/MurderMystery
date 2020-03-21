@@ -66,7 +66,7 @@ public class MurderMystery implements IMinigame {
 							// MESSAGE
 							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, 
 									ComponentBuilder
-									.text("Hra sa začne o " + i)
+									.text("Hra sa začne o " + i + "sek")
 									.color(ChatColor.YELLOW)
 									.build());
 							break;
@@ -78,7 +78,7 @@ public class MurderMystery implements IMinigame {
 							// TITLE
 							for(Player p: Bukkit.getOnlinePlayers()) {
 								p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1F, 1F);
-								p.sendTitle("§e§lHra začne o", "§a" + i, 20, 40, 20);
+								p.sendTitle("§e§lHra začne", "§a" + i + "sek", 20, 40, 20);
 							}
 							break;
 						}

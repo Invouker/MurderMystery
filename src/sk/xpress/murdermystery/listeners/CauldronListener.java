@@ -2,12 +2,9 @@ package sk.xpress.murdermystery.listeners;
 
 import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,8 +19,10 @@ import org.bukkit.potion.PotionEffectType;
 
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
+import sk.xpress.murdermystery.Cauldron;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.handler.Chat;
+import sk.xpress.murdermystery.handler.Roles;
 
 public class CauldronListener implements Listener {
 	
@@ -39,11 +38,11 @@ public class CauldronListener implements Listener {
 				
 				Player p = e.getPlayer();
 				// AK KLIKOL NA CAULDRON...
-				if(Main.isPlayerDetective(p) || Main.isPlayerInnocent(p)) {
-		
+				if(Main.playerDetectRole(p) == Roles.DETECTIVE || Main.playerDetectRole(p) == Roles.INNOCENT) {
+				
 					if(!isCauldronValidLocation(b)) return;
 					if(p.getInventory().getItem(4) != null && p.getInventory().getItem(4).getType() == Material.GOLD_INGOT) {
-						
+					if(p.getInventory().getItem(2) != null) return;
 						
 						ItemStack is = p.getInventory().getItem(4);
 						if(is.getAmount() >= 2) {
@@ -102,24 +101,12 @@ public class CauldronListener implements Listener {
 	
 	public boolean isCauldronValidLocation(Block b) {
 		Location bLoc = b.getLocation();
-		ConfigurationSection cs = Main.getInstance().getConfig().getConfigurationSection("murdermystery.arena.cauldrons");
-		for(String s : cs.getKeys(false)) {
+		for(Cauldron caul : Main.getCauldrons()) {
+			Location loc = caul.getLocation();
 			
-			double x = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".x");
-			double y = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".y");
-			double z = Main.getInstance().getConfig().getDouble("murdermystery.arena.cauldrons." + s + ".z");		
-			String world = Main.getInstance().getConfig().getString("murdermystery.arena.cauldrons." + s + ".world");
-			World w = Bukkit.getWorld(world);
-
-			Location loc = new Location(w, x, y, z);
-			
-			if(loc.getBlockX() == bLoc.getBlockX()) {
-				if(loc.getBlockY() == bLoc.getBlockY()) {
-					if(loc.getBlockZ() == bLoc.getBlockZ()) {
-						return true;
-					}
-				} 
-			} 			
+			if(loc.getBlockX() == bLoc.getBlockX() && loc.getBlockY() == bLoc.getBlockY() && loc.getBlockZ() == bLoc.getBlockZ()) {
+				return true;		 			
+			}
 		}		
 		return false;
 	}

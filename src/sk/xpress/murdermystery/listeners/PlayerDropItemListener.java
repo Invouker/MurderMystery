@@ -25,6 +25,7 @@ public class PlayerDropItemListener implements Listener {
 			case GOLD_INGOT: 
 			case IRON_SWORD: 
 			case POTION:
+			case GLASS_BOTTLE:
 			case ARROW: {
 				e.setCancelled(true);
 				break;

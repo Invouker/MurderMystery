@@ -1,5 +1,6 @@
 package sk.xpress.murdermystery.listeners;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -12,6 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import net.graymadness.minigame_api.api.API;
+import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.graymadness.minigame_api.helper.item.ItemBuilder;
 import net.md_5.bungee.api.ChatColor;
@@ -57,7 +59,8 @@ public class PlayerPickupItem implements Listener {
 									-1, 
 									p.getLocation().getBlockZ()));
 							
-							p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 6f, 6f);
+							p.playSound(p.getLocation(), Sound.ENTITY_ITEM_PICKUP, 6f, 6f);	
+							
 						}
 
 					
@@ -69,7 +72,8 @@ public class PlayerPickupItem implements Listener {
 							if(p.getInventory().getItem(7) == null) p.getInventory().setItem(7, new ItemBuilder(Material.ARROW).setAmount(1).build());
 							else p.getInventory().addItem(new ItemBuilder(Material.ARROW).setAmount(1).build());
 							
-							p.getInventory().getItem(4).setAmount(p.getInventory().getItem(4).getAmount()-10);
+							p.getInventory().getItem(4).setAmount(p.getInventory().getItem(4).getAmount()-10);	
+							
 						}
 						
 						return;
@@ -103,6 +107,8 @@ public class PlayerPickupItem implements Listener {
 						
 						p.getInventory().setItem(8, bow);
 						p.getInventory().setItem(35, arrow);
+						
+						for(Player player: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(player, ComponentBuilder.text("Hr·Ë zodvihol luk!").build());
 					}
 					
 					e.setCancelled(true);
