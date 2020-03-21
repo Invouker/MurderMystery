@@ -20,8 +20,6 @@ import net.graymadness.minigame_api.event.MinigameEndedEvent;
 import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import net.md_5.bungee.api.ChatColor;
-import sk.xpress.murdermystery.handler.Chat;
-import sk.xpress.murdermystery.listeners.JoinQuit;
 
 public class MurderMystery implements IMinigame {
  
@@ -62,7 +60,7 @@ public class MurderMystery implements IMinigame {
 				int i = 10;
 				@Override
 				public void run() {
-					Chat.print("I: " + i);
+					//Chat.print("I: " + i);
 					switch(i) {
 						case 5:
 						case 4: {

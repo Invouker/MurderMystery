@@ -1,14 +1,12 @@
 package sk.xpress.murdermystery;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 import org.bukkit.scoreboard.Team.Option;
 import org.bukkit.scoreboard.Team.OptionStatus;
 
-import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
 public class TeamManager {
@@ -22,16 +20,16 @@ public class TeamManager {
 		else sb = p.getScoreboard();
 		
 		if(sb.getTeam(Roles.INNOCENT.getName()) == null) {
-			Chat.print("REGISTER");
+			
 			innocent = sb.registerNewTeam(Roles.INNOCENT.getName());
-			innocent.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.ALWAYS);
+			innocent.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
 			innocent.setAllowFriendlyFire(true);
-		}Chat.print("REGISTRED");
+		}
 
 		if(sb.getTeam(Roles.DETECTIVE.getName()) == null) {
 			detective = sb.registerNewTeam(Roles.DETECTIVE.getName());
-			detective.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.ALWAYS);
-			detective.setColor(ChatColor.BLUE);
+			detective.setOption(Option.NAME_TAG_VISIBILITY, OptionStatus.NEVER);
+			//detective.setColor(ChatColor.BLUE);
 		}
 		
 	}

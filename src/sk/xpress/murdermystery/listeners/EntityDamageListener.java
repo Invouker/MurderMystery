@@ -1,4 +1,4 @@
-package sk.xpress.murdermystery.handler;
+package sk.xpress.murdermystery.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

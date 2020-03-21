@@ -55,13 +55,13 @@ public class Chat {
 			p.sendMessage("");
 			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
 			p.sendMessage("");
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMURDER MYSTERY")).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§f§lMURDER MYSTERY")).build());
 			p.sendMessage("");
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §aINNOCENT")).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §7INNOCENT")).build());
 			p.sendMessage("");
-			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §f" + detective)).build());
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §f" + murderer)).build());
-			if(!hero.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lHero: §f" + hero)).build());
+			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §7" + detective)).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §7" + murderer)).build());
+			if(!hero.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§6§lHero: §7" + hero)).build());
 			p.sendMessage("");
 			
 			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
@@ -73,12 +73,12 @@ public class Chat {
 			p.sendMessage("");
 			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");
 			p.sendMessage("");
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMURDER MYSTERY")).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§f§lMURDER MYSTERY")).build());
 			p.sendMessage("");
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §cMURDER")).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§e§lWinner: §7MURDER")).build());
 			p.sendMessage("");
-			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §f" + detective)).build());
-			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §f" + murderer)).build());
+			if(!detective.equals("")) ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§9§lDetective: §7" + detective)).build());
+			ChatInfo.NULL.send(p, ComponentBuilder.text(Chat.getCentredMessage("§c§lMurderer: §7" + murderer)).build());
 			p.sendMessage("");
 			
 			p.sendMessage("§a§l▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬");

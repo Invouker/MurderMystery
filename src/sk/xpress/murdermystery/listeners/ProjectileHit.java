@@ -26,8 +26,8 @@ public class ProjectileHit implements Listener {
 			Player p = (Player) arrow.getShooter();
 			Player target = (Player) e.getHitEntity();
 
-			Chat.print("DETECT ROLE OF PLAYER: " + Main.playerDetectRole(p).getName());
-			Chat.print("DETECT ROLE OF TARGET: " + Main.playerDetectRole(target).getName());
+			//Chat.print("DETECT ROLE OF PLAYER: " + Main.playerDetectRole(p).getName());
+			//Chat.print("DETECT ROLE OF TARGET: " + Main.playerDetectRole(target).getName());
 			
 			if(Main.isPlayerInnocent(target)) {
 				Chat.print("4");

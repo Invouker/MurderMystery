@@ -67,7 +67,7 @@ public class PlayerPickupItem implements Listener {
 						if(Main.isPlayerDetective(p)) return; // aby detektÌv nedostal druh˝ luk...
 						
 						if(p.getInventory().getItem(4) != null && p.getInventory().getItem(4).getAmount() >= 10) { // na pridanie luku hr·Ëovi...
-							p.getInventory().setItem(8, new ItemBuilder(Material.BOW).build());
+							p.getInventory().setItem(8, new ItemBuilder(Material.BOW).setUnbreakable().addItemFlag(ItemFlag.HIDE_UNBREAKABLE).build());
 							
 							if(p.getInventory().getItem(7) == null) p.getInventory().setItem(7, new ItemBuilder(Material.ARROW).setAmount(1).build());
 							else p.getInventory().addItem(new ItemBuilder(Material.ARROW).setAmount(1).build());

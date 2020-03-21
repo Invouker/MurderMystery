@@ -26,11 +26,11 @@ import net.graymadness.minigame_api.api.MinigameState;
 import net.graymadness.minigame_api.event.MinigameStateChangedEvent;
 import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.DetectiveBow;
-import sk.xpress.murdermystery.handler.EntityDamageListener;
-import sk.xpress.murdermystery.handler.FoodLevelChangeListener;
 import sk.xpress.murdermystery.handler.Roles;
 import sk.xpress.murdermystery.listeners.ASyncChatListener;
 import sk.xpress.murdermystery.listeners.CauldronListener;
+import sk.xpress.murdermystery.listeners.EntityDamageListener;
+import sk.xpress.murdermystery.listeners.FoodLevelChangeListener;
 import sk.xpress.murdermystery.listeners.ItemDespawnListener;
 import sk.xpress.murdermystery.listeners.JoinQuit;
 import sk.xpress.murdermystery.listeners.MinigameEndedListener;
@@ -40,8 +40,8 @@ import sk.xpress.murdermystery.listeners.PlayerDropItemListener;
 import sk.xpress.murdermystery.listeners.PlayerHitEvent;
 import sk.xpress.murdermystery.listeners.PlayerItemConsumeListener;
 import sk.xpress.murdermystery.listeners.PlayerPickupItem;
+import sk.xpress.murdermystery.listeners.PreventInventoryDragListener;
 import sk.xpress.murdermystery.listeners.ProjectileHit;
-import sk.xpress.murdermystery.listeners.Test;
 import sk.xpress.murdermystery.listeners.ThrowableSword;
 
 
@@ -148,7 +148,6 @@ public class Main extends JavaPlugin {
 
 	public void listeners() {
 		PluginManager pm = Bukkit.getPluginManager();
-		pm.registerEvents(new Test(), this);
 		pm.registerEvents(new JoinQuit(), this);
 		
 		pm.registerEvents(new PlayerPickupItem(), this);
@@ -158,6 +157,7 @@ public class Main extends JavaPlugin {
 		pm.registerEvents(new FoodLevelChangeListener(), this);
 		pm.registerEvents(new ProjectileHit(), this);
 		pm.registerEvents(new PlayerHitEvent(), this);
+		pm.registerEvents(new PreventInventoryDragListener(), this);
 		
 		pm.registerEvents(new CauldronListener(), this);
 		pm.registerEvents(new PlayerItemConsumeListener(), this);

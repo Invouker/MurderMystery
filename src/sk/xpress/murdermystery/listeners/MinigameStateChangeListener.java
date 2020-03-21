@@ -20,7 +20,6 @@ import net.graymadness.minigame_api.helper.ChatInfo;
 import net.graymadness.minigame_api.helper.ComponentBuilder;
 import sk.xpress.murdermystery.Main;
 import sk.xpress.murdermystery.TeamManager;
-import sk.xpress.murdermystery.handler.Chat;
 import sk.xpress.murdermystery.handler.Roles;
 
 public class MinigameStateChangeListener implements Listener  {
@@ -86,26 +85,26 @@ public class MinigameStateChangeListener implements Listener  {
 				int time = 10;
 				@Override
 				public void run() {
-					Chat.print("TIME: " + time);
+					//Chat.print("TIME: " + time);
 					
 					switch(time) {
 						case 20:{
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane sword o " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane svoj meè o " + time + " sekúnd").build());
 							break;
 						}
 						case 10: {
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane sword o " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane svoj meè o " + time + " sekúnd").build());
 							break;
 						}
 						case 5: {
-							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane sword o " + time + " sekúnd").build());
+							for(Player p: Bukkit.getOnlinePlayers()) ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane svoj meè o " + time + " sekúnd").build());
 							break;
 						}
 						case 3: 
 						case 2:
 						case 1:{
 							for(Player p: Bukkit.getOnlinePlayers()) {
-								ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane sword o " + time + " sekúnd").build());
+								ChatInfo.GENERAL_INFO.send(p, ComponentBuilder.text("Vrah dostane svoj meè o §c" + time + "§e sekúnd").build());
 							}
 							break;
 						}
