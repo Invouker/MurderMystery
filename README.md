@@ -1,4 +1,5 @@
-# MurderMystery
+# MurderMystery <img src="MurderMystery.png" align="right" alt="drawing" width="150" />
+
 
 ### Popis
 > **Verzia:** 0.1 Beta  
